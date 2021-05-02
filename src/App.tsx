@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { Router, Route } from "react-router-dom";
 import IndexPage from "./pages/IndexPage";
 import { createBrowserHistory } from "history";
