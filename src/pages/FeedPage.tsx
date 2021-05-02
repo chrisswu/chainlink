@@ -1,10 +1,10 @@
 import {
-  Box,
   Container,
   createStyles,
   Grid,
   makeStyles,
   Paper,
+  Theme,
   Typography,
 } from "@material-ui/core";
 import { BigNumber, Contract, ethers } from "ethers";
@@ -15,7 +15,7 @@ import { Heading, Subheading } from "../fonts";
 import { formatAnswer, formatTimestamp } from "../helperFunctions";
 import { FeedData } from "../types";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerStyle: {
       maxWidth: "90%",
@@ -30,6 +30,7 @@ const useStyles = makeStyles(() =>
 const FeedPage = () => {
   const classes = useStyles();
   const { id } = useParams<{ id: string }>();
+  const feedName = id.split("-").join(" / ");
   const { feeds, loading } = useAppContext();
   const [feed, setFeed] = useState<FeedData>();
 
@@ -63,14 +64,13 @@ const FeedPage = () => {
 
   return (
     <Container className={classes.containerStyle}>
-      {feed !== undefined && (
-        <Grid container direction="column" spacing={3}>
-          <Grid item>
-            <Heading>{feed!.name}</Heading>
-          </Grid>
-          <Grid item>
-            {/* <Box className={classes.boxStyle}> */}
-            <Paper className={classes.paperStyle}>
+      <Grid container direction="column" spacing={3}>
+        <Grid item>
+          <Heading>{feedName}</Heading>
+        </Grid>
+        <Grid item>
+          <Paper className={classes.paperStyle}>
+            {feed !== undefined && (
               <Grid container direction="column" spacing={3}>
                 <Grid item>
                   <Subheading>Latest Answer</Subheading>
@@ -91,11 +91,13 @@ const FeedPage = () => {
                   <Typography variant="body1">{feed!.updateTime}</Typography>
                 </Grid>
               </Grid>
-            </Paper>
-            {/* </Box> */}
-          </Grid>
+            )}
+            {feed === undefined && (
+              <Typography variant="h6">Loading...</Typography>
+            )}
+          </Paper>
         </Grid>
-      )}
+      </Grid>
     </Container>
   );
 };

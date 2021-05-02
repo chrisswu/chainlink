@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  Box,
   Card,
   Container,
   createStyles,
   Grid,
   makeStyles,
+  Theme,
   Typography,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import { useAppContext } from "../AppContext";
 import { formatAnswer } from "../helperFunctions";
 import { Heading, Subheading } from "../fonts";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerStyle: {
       marginTop: "50px",
@@ -32,12 +32,16 @@ const useStyles = makeStyles(() =>
     linkStyle: {
       textDecoration: "none",
     },
+    loading: {
+      display: "flex",
+      justifyContent: "center",
+    },
   })
 );
 
 export const IndexPage = () => {
   const classes = useStyles();
-  const { feeds } = useAppContext();
+  const { feeds, loading } = useAppContext();
 
   return (
     <Container className={classes.containerStyle}>
@@ -62,6 +66,11 @@ export const IndexPage = () => {
           );
         })}
       </Grid>
+      {loading && (
+        <Typography variant="h6" className={classes.loading}>
+          Loading...
+        </Typography>
+      )}
     </Container>
   );
 };
