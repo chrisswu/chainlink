@@ -1,9 +1,12 @@
+import { createMuiTheme, CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
 import { BigNumber, Contract, ethers } from "ethers";
 import React, {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { FeedData } from "./types";
@@ -79,9 +82,23 @@ export const AppProvider: React.FunctionComponent<AppProviderProps> = ({
     fetchFeeds();
   }, []);
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "rgb(26, 43, 107)",
+      },
+      secondary: {
+        main: "#375BD2",
+      },
+    },
+  });
+
   return (
     <AppContext.Provider value={{ feeds, loading, setLoading, setFeeds }}>
-      {children}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </AppContext.Provider>
   );
 };

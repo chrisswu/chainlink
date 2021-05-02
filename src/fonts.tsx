@@ -14,7 +14,7 @@ const useStyles = makeStyles(() =>
 
 export const Heading = ({ children }: { children: any }) => {
   return (
-    <Typography variant="h2" className={useStyles().heading}>
+    <Typography variant="h2" className={useStyles().heading} color="primary">
       {children}
     </Typography>
   );
@@ -22,7 +22,11 @@ export const Heading = ({ children }: { children: any }) => {
 
 export const Subheading = ({ children }: { children: any }) => {
   return (
-    <Typography variant="h5" className={useStyles().subheading}>
+    <Typography
+      variant="h5"
+      className={useStyles().subheading}
+      color="secondary"
+    >
       {children}
     </Typography>
   );

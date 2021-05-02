@@ -18,11 +18,17 @@ import { FeedData } from "../types";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerStyle: {
-      maxWidth: "90%",
       marginTop: "50px",
+      maxWidth: "90%",
     },
     paperStyle: {
       padding: "30px",
+      minHeight: "300px",
+      alignItems: "center",
+      display: "flex",
+    },
+    loading: {
+      margin: "auto",
     },
   })
 );
@@ -87,13 +93,15 @@ const FeedPage = () => {
                   <Typography variant="body1">{feed!.heartbeat}</Typography>
                 </Grid>
                 <Grid item>
-                  <Subheading>Last update time</Subheading>
+                  <Subheading>Last Update Time</Subheading>
                   <Typography variant="body1">{feed!.updateTime}</Typography>
                 </Grid>
               </Grid>
             )}
             {feed === undefined && (
-              <Typography variant="h6">Loading...</Typography>
+              <div className={classes.loading}>
+                <Typography variant="h6">Loading...</Typography>
+              </div>
             )}
           </Paper>
         </Grid>

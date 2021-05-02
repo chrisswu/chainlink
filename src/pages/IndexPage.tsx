@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
     loading: {
       display: "flex",
       justifyContent: "center",
+      alignItems: "center",
+      height: "500px",
     },
   })
 );
@@ -67,9 +69,9 @@ export const IndexPage = () => {
         })}
       </Grid>
       {loading && (
-        <Typography variant="h6" className={classes.loading}>
-          Loading...
-        </Typography>
+        <div className={classes.loading}>
+          <Typography variant="h6">Loading...</Typography>
+        </div>
       )}
     </Container>
   );
