@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Card,
-  Container,
   createStyles,
   Grid,
   makeStyles,
@@ -12,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../AppContext";
 import { formatAnswer } from "../helperFunctions";
 import { Heading, Subheading } from "../fonts";
+import Layout from "../Layout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,7 +46,7 @@ export const IndexPage = () => {
   const { feeds, loading } = useAppContext();
 
   return (
-    <Container className={classes.containerStyle}>
+    <Layout breadcrumbs={[]}>
       <Heading>Feeds</Heading>
       <br />
       <Grid container spacing={4} wrap="wrap">
@@ -54,7 +54,7 @@ export const IndexPage = () => {
           return (
             <Grid item xs={3} className={classes.gridItemStyle}>
               <Link
-                to={"/" + feed.pair[0] + "-" + feed.pair[1]}
+                to={"/feeds/" + feed.pair[0] + "-" + feed.pair[1]}
                 className={classes.linkStyle}
               >
                 <Card className={classes.feedCardStyle}>
@@ -73,7 +73,7 @@ export const IndexPage = () => {
           <Typography variant="h6">Loading...</Typography>
         </div>
       )}
-    </Container>
+    </Layout>
   );
 };
 export default IndexPage;

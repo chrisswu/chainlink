@@ -13,7 +13,15 @@ export const formatAnswer = (
   let temp = answer.split("").reverse();
   temp.splice(multiplyString.length - 1, 0, ".");
   const price = temp.reverse().join("");
-  return sign + price;
+  return sign + stripZerosAfterDecimal(price);
+};
+
+const stripZerosAfterDecimal = (priceString: string) => {
+  const decimal = priceString.split(".")[1];
+  if (decimal.length > 2) {
+    return priceString.replaceAll(/0*$/g, "");
+  }
+  return priceString;
 };
 
 export const formatTimestamp = (unixTimestamp: number) => {

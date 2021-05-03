@@ -11,3 +11,9 @@ export type FeedData = {
   sign: string;
   multiply: number;
 };
+
+export type Breadcrumb = {
+  icon: string;
+  name: string;
+  path: string;
+};

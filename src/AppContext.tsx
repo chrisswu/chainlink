@@ -6,7 +6,6 @@ import React, {
   ReactNode,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import { FeedData } from "./types";

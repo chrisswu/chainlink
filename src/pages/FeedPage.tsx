@@ -1,5 +1,4 @@
 import {
-  Container,
   createStyles,
   Grid,
   makeStyles,
@@ -9,10 +8,11 @@ import {
 } from "@material-ui/core";
 import { BigNumber, Contract, ethers } from "ethers";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../AppContext";
 import { Heading, Subheading } from "../fonts";
 import { formatAnswer, formatTimestamp } from "../helperFunctions";
+import Layout from "../Layout";
 import { FeedData } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,15 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const FeedPage = () => {
   const classes = useStyles();
-  const { id } = useParams<{ id: string }>();
-  const feedName = id.split("-").join(" / ");
   const { feeds, loading } = useAppContext();
+  const { id } = useParams<{ id: string }>();
+  const history = useHistory();
+  const feedName = id.split("-").join(" / ");
   const [feed, setFeed] = useState<FeedData>();
 
   useEffect(() => {
     const currFeed = feeds.find(
       (feed) => feed.pair[0] + "-" + feed.pair[1] === id
     );
+    if (feeds.length > 0 && currFeed === undefined) history.push("/notfound");
     if (currFeed !== undefined) {
       const fetchFeed = async () => {
         const ABI: ethers.ContractInterface = [
@@ -69,11 +71,13 @@ const FeedPage = () => {
   }, [loading]);
 
   return (
-    <Container className={classes.containerStyle}>
+    <Layout breadcrumbs={[{ name: "Feeds", path: "", icon: "home" }]}>
       <Grid container direction="column" spacing={3}>
-        <Grid item>
-          <Heading>{feedName}</Heading>
-        </Grid>
+        {feed !== undefined && (
+          <Grid item>
+            <Heading>{feedName}</Heading>
+          </Grid>
+        )}
         <Grid item>
           <Paper className={classes.paperStyle}>
             {feed !== undefined && (
@@ -106,7 +110,7 @@ const FeedPage = () => {
           </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </Layout>
   );
 };
 export default FeedPage;
