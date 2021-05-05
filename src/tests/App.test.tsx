@@ -1,5 +1,10 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  cleanup,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import App from "../App";
 
 test("renders feeds", () => {
@@ -8,23 +13,23 @@ test("renders feeds", () => {
   expect(feeds).toBeInTheDocument();
 });
 
-test("renders cards", () => {
+test("renders cards + click card", async () => {
   render(<App />);
-  waitFor(() => {
-    const card = screen.getByText("JPY / USD");
-    expect(card).toBeInTheDocument();
+  await waitForElementToBeRemoved(() => screen.queryByText("Loading..."), {
+    timeout: 4000,
   });
-});
+  const card = await screen.findByText("JPY / USD");
+  expect(card).toBeInTheDocument();
+  card.click();
+  await waitForElementToBeRemoved(() => screen.queryByText("Loading..."), {
+    timeout: 4000,
+  });
+  const feedName = await screen.findByText("JPY / USD");
+  const answer = await screen.findByText("Latest Answer");
+  expect(feedName).toBeInTheDocument();
+  expect(answer).toBeInTheDocument();
+}, 8000);
 
-test("click card + render feed", () => {
-  render(<App />);
-  waitFor(() => {
-    const card = screen.getByText("JPY / USD");
-    expect(card).toBeInTheDocument();
-    card.click();
-    const answer = screen.getByText("Latest Answer");
-    const deviation = screen.getByText("Deviation Threshold");
-    expect(answer).toBeInTheDocument();
-    expect(deviation).toBeInTheDocument();
-  });
+afterEach(() => {
+  cleanup();
 });
