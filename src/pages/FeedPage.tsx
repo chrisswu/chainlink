@@ -10,10 +10,11 @@ import { BigNumber, Contract, ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../AppContext";
-import { Heading, Subheading } from "../fonts";
+import { Bodyheading, Heading, Subheading } from "../fonts";
 import { formatAnswer, formatTimestamp } from "../helperFunctions";
-import Layout from "../Layout";
-import { FeedData } from "../types";
+import Layout from "../components/Layout";
+import { FeedABI, FeedData } from "../types";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,22 +49,18 @@ const FeedPage = () => {
     if (feeds.length > 0 && currFeed === undefined) history.push("/notfound");
     if (currFeed !== undefined) {
       const fetchFeed = async () => {
-        const ABI: ethers.ContractInterface = [
-          "function latestAnswer() view returns (int256)",
-          "function latestTimestamp() view returns (uint256)",
-        ];
         const provider = new ethers.providers.InfuraProvider();
         const contract: Contract = new ethers.Contract(
           currFeed.address,
-          ABI,
+          FeedABI,
           provider
         );
         const answer: BigNumber = await contract.latestAnswer();
         const timestamp: BigNumber = await contract.latestTimestamp();
         setFeed({
           ...currFeed,
-          answer: answer,
-          updateTime: formatTimestamp(timestamp.toNumber()),
+          answer: answer.toString(),
+          updateTime: timestamp.toNumber(),
         });
       };
       fetchFeed();
@@ -73,38 +70,38 @@ const FeedPage = () => {
   return (
     <Layout breadcrumbs={[{ name: "Feeds", path: "", icon: "home" }]}>
       <Grid container direction="column" spacing={3}>
-        {feed !== undefined && (
-          <Grid item>
-            <Heading>{feedName}</Heading>
-          </Grid>
-        )}
         <Grid item>
-          <Paper className={classes.paperStyle}>
+          <Heading>{feed !== undefined ? feedName : <Skeleton />}</Heading>
+        </Grid>
+        <Grid item>
+          <Paper className={classes.paperStyle} elevation={3}>
             {feed !== undefined && (
               <Grid container direction="column" spacing={3}>
                 <Grid item>
-                  <Subheading>Latest Answer</Subheading>
-                  <Typography variant="body1">
+                  <Bodyheading>Latest Answer</Bodyheading>
+                  <Typography variant="body2">
                     {formatAnswer(feed!.sign, feed!.answer, feed!.multiply)}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Subheading>Deviation Threshold</Subheading>
-                  <Typography variant="body1">{feed!.threshold}</Typography>
+                  <Bodyheading>Deviation Threshold</Bodyheading>
+                  <Typography variant="body2">{feed!.threshold}</Typography>
                 </Grid>
                 <Grid item>
-                  <Subheading>Heartbeat</Subheading>
-                  <Typography variant="body1">{feed!.heartbeat}</Typography>
+                  <Bodyheading>Heartbeat</Bodyheading>
+                  <Typography variant="body2">{feed!.heartbeat}</Typography>
                 </Grid>
                 <Grid item>
-                  <Subheading>Last Update Time</Subheading>
-                  <Typography variant="body1">{feed!.updateTime}</Typography>
+                  <Bodyheading>Last Update Time</Bodyheading>
+                  <Typography variant="body2">
+                    {formatTimestamp(feed!.updateTime)}
+                  </Typography>
                 </Grid>
               </Grid>
             )}
             {feed === undefined && (
               <div className={classes.loading}>
-                <Typography variant="h6">Loading...</Typography>
+                <Subheading>Loading...</Subheading>
               </div>
             )}
           </Paper>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Heading } from "../fonts";
-import Layout from "../Layout";
+import Layout from "../components/Layout";
 
 export const NotFoundPage = () => {
   return (

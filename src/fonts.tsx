@@ -1,20 +1,8 @@
-import { createStyles, makeStyles, Typography } from "@material-ui/core";
-import React from "react";
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    heading: {
-      fontWeight: "bold",
-    },
-    subheading: {
-      fontWeight: "bold",
-    },
-  })
-);
+import { Typography } from "@material-ui/core";
 
 export const Heading = ({ children }: { children: any }) => {
   return (
-    <Typography variant="h2" className={useStyles().heading} color="primary">
+    <Typography variant="h2" color="primary">
       {children}
     </Typography>
   );
@@ -22,11 +10,15 @@ export const Heading = ({ children }: { children: any }) => {
 
 export const Subheading = ({ children }: { children: any }) => {
   return (
-    <Typography
-      variant="h5"
-      className={useStyles().subheading}
-      color="secondary"
-    >
+    <Typography variant="h5" color="primary">
+      {children}
+    </Typography>
+  );
+};
+
+export const Bodyheading = ({ children }: { children: any }) => {
+  return (
+    <Typography variant="h6" color="secondary">
       {children}
     </Typography>
   );

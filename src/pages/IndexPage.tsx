@@ -10,8 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import { useAppContext } from "../AppContext";
 import { formatAnswer } from "../helperFunctions";
-import { Heading, Subheading } from "../fonts";
-import Layout from "../Layout";
+import { Bodyheading, Heading, Subheading } from "../fonts";
+import Layout from "../components/Layout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,8 +58,9 @@ export const IndexPage = () => {
                 className={classes.linkStyle}
               >
                 <Card className={classes.feedCardStyle}>
-                  <Subheading>{feed.name}</Subheading>
-                  <Typography variant="body1">
+                  <Bodyheading>{feed.name}</Bodyheading>
+                  <br />
+                  <Typography variant="body2">
                     {formatAnswer(feed!.sign, feed!.answer, feed!.multiply)}
                   </Typography>
                 </Card>
@@ -70,7 +71,7 @@ export const IndexPage = () => {
       </Grid>
       {loading && (
         <div className={classes.loading}>
-          <Typography variant="h6">Loading...</Typography>
+          <Subheading>Loading...</Subheading>
         </div>
       )}
     </Layout>

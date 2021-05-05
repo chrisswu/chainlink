@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { FeedData } from "./types";
+import { FeedABI, FeedData } from "./types";
 
 type AppContext = {
   feeds: FeedData[];
@@ -37,10 +37,6 @@ export const AppProvider: React.FunctionComponent<AppProviderProps> = ({
   useEffect(() => {
     setLoading(true);
     const fetchFeeds = async () => {
-      const ABI: ethers.ContractInterface = [
-        "function latestAnswer() view returns (int256)",
-        "function latestTimestamp() view returns (uint256)",
-      ];
       const provider = new ethers.providers.InfuraProvider();
       try {
         const response = await fetch(
@@ -54,17 +50,17 @@ export const AppProvider: React.FunctionComponent<AppProviderProps> = ({
               async (feed: any): Promise<FeedData> => {
                 const contract: Contract = new ethers.Contract(
                   feed.contractAddress,
-                  ABI,
+                  FeedABI,
                   provider
                 );
                 const answer: BigNumber = await contract.latestAnswer();
                 return {
                   name: feed.name,
                   address: feed.contractAddress,
-                  answer: answer,
+                  answer: answer.toString(),
                   threshold: feed.threshold,
                   heartbeat: feed.heartbeat,
-                  updateTime: "",
+                  updateTime: 0,
                   pair: feed.pair,
                   sign: feed.valuePrefix,
                   multiply: feed.multiply,
@@ -88,6 +84,21 @@ export const AppProvider: React.FunctionComponent<AppProviderProps> = ({
       },
       secondary: {
         main: "#375BD2",
+      },
+    },
+    typography: {
+      h2: {
+        fontWeight: "bold",
+      },
+      h5: {
+        fontWeight: "bold",
+      },
+      h6: {
+        fontWeight: "bold",
+      },
+      body2: {
+        fontSize: "1.3rem",
+        fontFamily: `'Itim', cursive`,
       },
     },
   });

@@ -8,7 +8,7 @@ import {
   Theme,
 } from "@material-ui/core";
 import React from "react";
-import { Breadcrumb } from "./types";
+import { Breadcrumb } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
